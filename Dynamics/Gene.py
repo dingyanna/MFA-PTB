@@ -29,11 +29,8 @@ class Gene(Net):
     def dxdt_mfa(self, x, t, param, degree):
         '''
         Return the N-D mean-field formula f(x, param) + degree * g(x, xeff, param).
-        '''
-        #xeff = self.Lstar(x)
-        xeff = self.xeff
-        #xeff = np.mean(x)
-        #xeff = self.xeff_coeff @ x
+        ''' 
+        xeff = self.xeff 
         B, f, h = param
         xh = xeff ** h 
         xf = x ** f 
