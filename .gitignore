@@ -1,0 +1,9 @@
+data 
+results    
+__pycache__ 
+archive 
+*png
+*pdf
+*csv  
+*tsv 
+*txt 
