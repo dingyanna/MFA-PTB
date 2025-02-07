@@ -6,36 +6,32 @@ This repository implements the **Mean-Field Approximation (MFA) enhanced by pert
 ## Dynamics 
 We consider four types of dynamical systems with the following general form:
 
-\[
+$$ 
 \frac{dx_i}{dt} = F(x_i) + \sum_j A_{ij} G(x_i, x_j)
-\]
+$$
 
 where:
-- \( F(x_i) \) governs the intrinsic behavior of node \( i \).
-- \( G(x_i, x_j) \) describes interactions between nodes.
-- \( A_{ij} \) represents the adjacency matrix of the network.
+- $ F(x_i) $ governs the intrinsic behavior of node \( i \).
+- $ G(x_i, x_j) $ describes interactions between nodes.
+- $ A_{ij} $ represents the adjacency matrix of the network.
 
  
 1. **Mutualistic Dynamics**: Models species abundance with logistic growth and mutualistic interactions.
-   \[
-   F(x_i) = B + x_{i} \left(1- \frac{x_{i}}{K}\right) \left( \frac{x_{i}}{C} -1 \right), \quad G(x_i, x_j) = \frac{x_{i}x_{j}}{D + E x_{i} + H x_{j}}
-   \]
-2. **Regulatory Dynamics**: Describes gene regulation using Michaelis-Menten kinetics.
-   \[
-   F(x_i) = -B x_i^f, \quad G(x_i, x_j) = \frac{x_j^h}{x_j^h + 1}
-   \]
-3. **Epidemic Dynamics**: Follows an SIS model for disease spread.
-   \[
-   F(x_i) = -x_i, \quad G(x_i, x_j) = B(1 - x_i)x_j
-   \]
-4. **Neuronal Dynamics**: Models neural activation using a sigmoid function.
-   \[
-   F(x_i) = -x_i, \quad G(x_i, x_j) = \frac{1}{1 + e^{-\tau(x_j - \mu)}}
-   \]
+
+   $F(x_i) = B + x_{i} \left(1- \frac{x_{i}}{K}\right) \left( \frac{x_{i}}{C} -1 \right), \quad G(x_i, x_j) = \frac{x_{i}x_{j}}{D + E x_{i} + H x_{j}}$
+3. **Regulatory Dynamics**: Describes gene regulation using Michaelis-Menten kinetics.
+
+   $F(x_i) = -B x_i^f, \quad G(x_i, x_j) = \frac{x_j^h}{x_j^h + 1}$
+5. **Epidemic Dynamics**: Follows an SIS model for disease spread.
+
+   $F(x_i) = -x_i, \quad G(x_i, x_j) = B(1 - x_i)x_j$
+7. **Neuronal Dynamics**: Models neural activation using a sigmoid function.
+
+   $F(x_i) = -x_i, \quad G(x_i, x_j) = \frac{1}{1 + e^{-\tau(x_j - \mu)}}$
 
 ## Topology  
 We conduct experiments on two types of synthetic network topologies:
-1. **Erdős-Rényi (ER) Networks**: Random graphs where each edge exists independently with probability \( p \). The degree distribution follows a Poisson distribution.
+1. **Erdős-Rényi (ER) Networks**: Random graphs where each edge exists independently with probability $ p $. The degree distribution follows a Poisson distribution.
 2. **Scale-Free (SF) Networks**: Networks with a power-law degree distribution, where a few nodes have significantly higher degrees than others.
 
 ## How to Run Experiments
