@@ -11,9 +11,9 @@ $$
 $$
 
 where:
-- $ F(x_i) $ governs the intrinsic behavior of node \( i \).
-- $ G(x_i, x_j) $ describes interactions between nodes.
-- $ A_{ij} $ represents the adjacency matrix of the network.
+- $F(x_i)$ governs the intrinsic behavior of node $ i $.
+- $G(x_i, x_j)$ describes interactions between nodes.
+- $A_{ij}$ represents the adjacency matrix of the network.
 
  
 1. **Mutualistic Dynamics**: Models species abundance with logistic growth and mutualistic interactions.
