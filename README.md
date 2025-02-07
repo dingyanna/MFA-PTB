@@ -11,7 +11,7 @@ $$
 $$
 
 where:
-- $F(x_i)$ governs the intrinsic behavior of node $ i $.
+- $F(x_i)$ governs the intrinsic behavior of node $i$.
 - $G(x_i, x_j)$ describes interactions between nodes.
 - $A_{ij}$ represents the adjacency matrix of the network.
 
