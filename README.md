@@ -1,6 +1,6 @@
 # Mean-Field Approximation with Perturbation for Steady-State Computation
 
-## Project Description
+## Overview
 This repository implements the **Mean-Field Approximation (MFA) enhanced by perturbation** for efficient equilibrium state estimation. MFA offers a fast, decoupled approximation, while the perturbation correction refines the estimate in just a few iterations. Leveraging MFA’s high-quality initial conditions and decoupling strategy, the method scales to networks with billions of interactions on standard CPUs. This approach enables the efficient analysis of large-scale complex systems.
 
 ## Dynamics 
