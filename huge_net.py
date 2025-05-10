@@ -10,6 +10,19 @@ from scipy.interpolate import CubicSpline
 from scipy.sparse.linalg import gmres, bicgstab
 from methods import rk4
   
+def map2unique(adj_list1):
+    unique_ind = np.unique(adj_list1)
+    remap = {}
+    count = 0
+    for i in unique_ind:
+        remap[i] = count 
+        count += 1 
+    adj_list = np.zeros((adj_list1.shape[0],2))
+    for i in range(adj_list.shape[0]):
+        adj_list[i][0] = remap[adj_list1[i][0]]
+        adj_list[i][1] = remap[adj_list1[i][1]]
+    return adj_list  
+ 
 def huge_net(args):
     '''
     Approximate steady state using pure mean-field approach plus some round of full ODEs.
@@ -63,29 +76,10 @@ def huge_net(args):
                 edge_count += 1 
         adj_list = np.array(edges)  
         N =  len(node_to_int)
-        M = edge_count
-    elif args.data in ['PP-Decagon_ppi.edges.csv', 'PP-Pathways_ppi.edges.csv']:  
-        adj_list = np.loadtxt(f"data/{args.data}", delimiter=',')
-        if np.min(adj_list) > 0:
-            adj_list -= np.min(adj_list)
-        N = len(np.unique(adj_list))
-        M = adj_list.shape[0]
-    elif args.data[:4] == "bio-" or args.data in ['soc-pokec-relationships.txt','com-friendster.ungraph.txt']:
-        adj_list1 = np.loadtxt(f"data/{args.data}", delimiter='\t') 
-        unique_ind = np.unique(adj_list1[:,:-1])
-        remap = {}
-        count = 0
-        for i in unique_ind:
-            remap[i] = count 
-            count += 1 
-
-        adj_list = np.zeros((adj_list1.shape[0],2))
-        for i in range(adj_list.shape[0]):
-            adj_list[i][0] = remap[adj_list1[i][0]]
-
-        M = adj_list.shape[0]
-        weights = adj_list1[:,-1] 
-        N = count
+        M = edge_count 
+    elif args.data in ['soc-pokec-relationships.txt','com-friendster.ungraph.txt']:
+        adj_list = np.loadtxt(f"data/{args.data}", delimiter='\t') 
+         
     else:
         f = open(f"data/{args.data}", "r")
         for i in range(3):
@@ -95,6 +89,11 @@ def huge_net(args):
         del data
         f.close()
         adj_list = np.loadtxt(f"data/{args.data}", delimiter='\t', skiprows=4)
+    
+    adj_list = map2unique(adj_list) 
+    N = int(np.max(adj_list)+1)
+    M = adj_list.shape[0]
+    
     logger.info(f'{time.ctime()}') 
     logger.info(f"N = {N}, M = {M}") 
     logger.info(f'adj_list.shape {adj_list.shape}')
@@ -102,6 +101,8 @@ def huge_net(args):
     if weights is None:
         weights = np.ones(E)  
     A = sp.csc_matrix((weights, (adj_list[:, 1], adj_list[:, 0])), shape=(N, N),  dtype=np.int64)
+    if not directed:
+        A = A + A.T
     net.setTopology(A, sparse=True, directed=directed) 
     np.savetxt(f"./results/{args.data}_degree.txt", net.degree)
      
@@ -128,8 +129,8 @@ def huge_net(args):
  
     t1 = time.time() 
     logger.info(f'\nStart computing xeff weighted {time.ctime()}')  
-  
-    beta = net.out_degree @ net.degree / net.degree.sum() 
+   
+    beta = net.degree @ A @ net.degree / (net.degree.T @ net.degree)  
     if args.dynamics == 'epi':
         x0 = 0.5
     else:
